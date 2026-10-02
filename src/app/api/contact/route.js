@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-
 export async function POST(request) {
   try {
     const { name, email, message } = await request.json();
@@ -11,22 +9,28 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
     }
 
-    if (!resend) {
-      console.warn('RESEND_API_KEY is not configured in environment variables.');
+    const apiKey = process.env.RESEND_API_KEY;
+    const recipient = process.env.ADMIN_EMAIL;
+
+    console.log('[Contact API] Attempting to send email to:', recipient, 'Using API key:', apiKey ? `${apiKey.substring(0, 7)}...` : 'NONE');
+
+    if (!apiKey) {
+      console.warn('[Contact API] RESEND_API_KEY is not configured in environment variables.');
       return NextResponse.json({
-        success: true,
-        message: 'Message received (RESEND_API_KEY not configured yet).',
-      });
+        success: false,
+        error: 'RESEND_API_KEY is not configured on the server.',
+      }, { status: 500 });
     }
 
-    const recipient = process.env.ADMIN_EMAIL;
     if (!recipient) {
-      console.error('ADMIN_EMAIL is not set in environment variables.');
+      console.error('[Contact API] ADMIN_EMAIL is not set in environment variables.');
       return NextResponse.json({ error: 'Recipient email is not configured' }, { status: 500 });
     }
 
+    const resendClient = new Resend(apiKey);
+
     // Send email via Resend
-    const { error: emailError } = await resend.emails.send({
+    const sendResult = await resendClient.emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
       to: recipient,
       replyTo: email,
@@ -63,12 +67,14 @@ export async function POST(request) {
       `,
     });
 
-    if (emailError) {
-      console.error('Resend delivery error:', emailError);
-      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    console.log('[Contact API] Resend API response:', JSON.stringify(sendResult, null, 2));
+
+    if (sendResult.error) {
+      console.error('[Contact API] Resend delivery error:', sendResult.error);
+      return NextResponse.json({ error: sendResult.error.message || 'Failed to send email' }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, id: sendResult.data?.id });
   } catch (err) {
     console.error('Contact API error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

@@ -118,18 +118,17 @@ export const EXPERIENCE = [
     description: "Participated in a software development internship focused on strengthening practical programming and development skills.",
   },
   {
-    company: "DC InfoTech",
-    role: "Training & Internship Program",
-    period: "Sep 2024 — Nov 2024",
-    location: "India",
-    description: "Completed a structured training and internship program focused on practical software development skills.",
+    company: "GirlScript Summer of Code (GSSoC)",
+    role: "Open Source Contributor",
+    period: "May 2024 — Aug 2024",
+    location: "Remote",
+    description: "Contributed to real-world open source projects, resolved issues, implemented features, and collaborated with maintainers and global developer communities.",
   },
 ];
 
 export const JOURNEY = [
   { year: "2024", title: "Foundations in CS", desc: "Started building deeper foundations in software development, data structures and computer science." },
-  { year: "2024", title: "DC InfoTech", desc: "Completed training and internship program focused on software engineering practices." },
-  { year: "2024", title: "GirlScript Summer of Code", desc: "Open Source Contributor — collaborated on real-world open source repositories." },
+  { year: "May 2024 — Aug 2024", title: "GirlScript Summer of Code (GSSoC)", desc: "Open Source Contributor — collaborated on real-world open source repositories and community projects." },
   { year: "2025", title: "ByteXL & SlashMark", desc: "Completed internships focused on core programming and React frontend development." },
   { year: "May 2025", title: "B.Tech CSE Graduation", desc: "Graduated with 8.30 CGPA from Parul Institute of Technology, Parul University." },
   { year: "March 2026 — Present", title: "Software Engineer-1", desc: "Working as Software Engineer-1 at Prometteur Solutions Pvt Ltd, engineering full-stack web applications and scalable APIs." },
