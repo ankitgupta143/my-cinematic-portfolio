@@ -134,7 +134,10 @@ const jsonLd = {
           }
         }
       ],
-      "sameAs": [],
+      "sameAs": [
+        "https://www.linkedin.com/in/ankit-gupta-77580b238",
+        "https://github.com"
+      ],
     },
     {
       "@type": "WebSite",

@@ -38,5 +38,5 @@ Git, GitHub, Docker, Postman, Cloudinary, Vercel
 - Summer Intern — ByteXL (Jan 2025 – Apr 2025)
 
 ## Connect with Ankit Gupta
-- GitHub: https://github.com/ankitgupta143
-- Repository: https://github.com/ankitgupta143/my-cinematic-portfolio
+- GitHub: https://github.com
+- LinkedIn: https://www.linkedin.com/in/ankit-gupta-77580b238

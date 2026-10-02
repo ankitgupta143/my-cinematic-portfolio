@@ -211,10 +211,10 @@ export default function VideoScrub() {
   }, [isMobile, mounted]);
 
   const SECTION_IMAGES = [
-    { id: null,              src: '/photo/hero.webp'    }, // default / hero
-    { id: 'about-section',  src: '/photo/about.webp'   },
-    { id: 'work-section',   src: '/photo/project.webp' },
-    { id: 'contact-section', src: '/photo/contact.webp' },
+    { id: null,              src: '/photo/hero.webp?v=2'    }, // default / hero
+    { id: 'about-section',  src: '/photo/about.webp?v=2'   },
+    { id: 'work-section',   src: '/photo/project.webp?v=2' },
+    { id: 'contact-section', src: '/photo/contact.webp?v=2' },
   ];
 
   // Mobile scroll-driven state — updated directly via RAF, no React re-renders
@@ -313,7 +313,7 @@ export default function VideoScrub() {
         <div 
           className="absolute inset-0 w-full h-full opacity-60"
           style={{
-            backgroundImage: "url('/photo/hero.webp')",
+            backgroundImage: "url('/photo/hero.webp?v=2')",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
@@ -361,7 +361,7 @@ export default function VideoScrub() {
   // Desktop: Full scroll-scrubbing video experience
   return (
     <div className="fixed inset-0 z-0 bg-[#0a0a0a]">
-      <video ref={fwdRef} src="/videos/optimized.mp4?v=2" poster="/photo/hero.webp"
+      <video ref={fwdRef} src="/videos/optimized.mp4?v=2" poster="/photo/hero.webp?v=2"
         className={cls} style={{ ...sty, opacity: 1 }}
         muted playsInline preload="metadata"
         aria-hidden="true" suppressHydrationWarning />

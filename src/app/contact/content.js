@@ -18,8 +18,8 @@ export const SECTION = {
 
 export const SOCIAL_LINKS = [
   { label: "Email Me", href: "mailto:contact@ankitgupta.dev", icon: TbMail },
-  { label: "GitHub", href: "https://github.com/ankitgupta143", icon: SiGithub },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: FaLinkedin },
+  { label: "GitHub", href: "https://github.com", icon: SiGithub },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ankit-gupta-77580b238", icon: FaLinkedin },
 ];
 
 

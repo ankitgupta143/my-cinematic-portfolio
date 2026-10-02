@@ -142,38 +142,40 @@ export default function Navbar() {
       {open && (
         <div
           ref={menuRef}
-          className="fixed inset-0 z-[55] bg-black/95 backdrop-blur-xl flex flex-col justify-center items-start px-10 md:hidden"
+          className="fixed inset-0 z-[55] bg-black/95 backdrop-blur-xl flex flex-col justify-start items-start px-6 sm:px-10 pt-28 pb-10 overflow-y-auto md:hidden"
         >
-          <ul className="flex flex-col gap-8 w-full">
-            {LINKS.map(({ label, href }) => {
-              const active = pathname === href;
-              return (
-                <li key={href} className="mobile-nav-link">
-                  <Link
-                    href={href}
-                    onClick={() => setOpen(false)}
-                    className={`block text-3xl font-black tracking-tighter transition-colors duration-300 ${active ? "text-[#ff6b1a]" : "text-white/70 hover:text-white"}`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              );
-            })}
-            <li className="mobile-nav-link mt-4 pt-4 border-t border-white/10 flex flex-col gap-6">
-               <button 
-                 suppressHydrationWarning
-                 onClick={() => {
-                   setOpen(false);
-                   setIsContactOpen(true);
-                 }}
-                 className="w-full py-4 bg-[#ff6b1a] text-black text-xl font-bold tracking-tight rounded-2xl hover:bg-white hover:text-black transition-colors duration-300"
-               >
-                 Let's Talk
-               </button>
-            </li>
-          </ul>
-          <div className="mobile-nav-link mt-16 text-[10px] text-white/20 tracking-[0.4em] uppercase">
-            Ankit Gupta · Full Stack Developer
+          <div className="w-full flex-1 flex flex-col justify-between max-w-sm">
+            <ul className="flex flex-col gap-5 sm:gap-6 w-full">
+              {LINKS.map(({ label, href }) => {
+                const active = pathname === href;
+                return (
+                  <li key={href} className="mobile-nav-link">
+                    <Link
+                      href={href}
+                      onClick={() => setOpen(false)}
+                      className={`block text-2xl sm:text-3xl font-black tracking-tighter transition-colors duration-300 ${active ? "text-[#ff6b1a]" : "text-white/70 hover:text-white"}`}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li className="mobile-nav-link mt-2 pt-4 border-t border-white/10 flex flex-col gap-4">
+                 <button 
+                   suppressHydrationWarning
+                   onClick={() => {
+                     setOpen(false);
+                     setIsContactOpen(true);
+                   }}
+                   className="w-full py-3.5 bg-[#ff6b1a] text-black text-lg font-bold tracking-tight rounded-2xl hover:bg-white hover:text-black transition-colors duration-300 active:scale-[0.98]"
+                 >
+                   Let's Talk
+                 </button>
+              </li>
+            </ul>
+            <div className="mobile-nav-link mt-8 pt-2 text-[10px] text-white/30 tracking-[0.35em] uppercase font-mono">
+              Ankit Gupta · Full Stack Developer
+            </div>
           </div>
         </div>
       )}

@@ -71,7 +71,7 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-6 text-[11px] uppercase tracking-[0.3em] font-medium">
             <a
-              href="https://github.com/ankitgupta143"
+              href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/40 hover:text-white transition-colors duration-300 flex items-center gap-2"
@@ -79,7 +79,7 @@ export default function Footer() {
               GitHub
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/ankit-gupta-77580b238"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/40 hover:text-white transition-colors duration-300 flex items-center gap-2"
