@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -127,51 +127,44 @@ function ProjectShowcase({ items, startIdx, onClose }) {
 /* ═══════════════════════════════════════════════
    MAIN PROJECTS PAGE — CircularGallery + Showcase
    ═══════════════════════════════════════════════ */
+const defaultMapped = PROJECTS.map((p) => ({
+  id: p.id,
+  image: p.image || "/photo/project.webp",
+  text: p.title,
+  category: p.shortCategory || "Full Stack",
+  description: p.description,
+  tech: p.tech,
+  link: p.link,
+}));
+
 export default function ProjectsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [items, setItems] = useState(null);
-  const [allFull, setAllFull] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [showcaseItem, setShowcaseItem] = useState(null);
-
-  const defaultMapped = PROJECTS.map((p) => ({
-    id: p.id,
-    image: p.image || "/photo/project.webp",
-    text: p.title,
-    category: p.shortCategory || "Full Stack",
-    description: p.description,
-    tech: p.tech,
-    link: p.link,
-  }));
-
   const [activeCategory, setActiveCategory] = useState("ALL");
-
-
-
+  const [showcaseItem, setShowcaseItem] = useState(null);
   const [spinRequest, setSpinRequest] = useState({ index: 0, timestamp: 0 });
-  const [filteredFull, setFilteredFull] = useState(null);
 
-  useEffect(() => {
-    if (!allFull) return;
-    const filtered = activeCategory === "ALL"
-      ? allFull
-      : allFull.filter(p => (p.category || "").toLowerCase().includes(activeCategory.toLowerCase()));
-    const display = filtered.length > 0 ? filtered : allFull;
-    setFilteredFull(display);
-    setItems(display.map(p => ({ image: p.image, text: p.text })));
-    setSpinRequest({ index: 0, timestamp: Date.now() });
-  }, [allFull, activeCategory]);
+  const filteredFull = useMemo(() => {
+    if (activeCategory === "ALL") return defaultMapped;
+    const filtered = defaultMapped.filter((p) =>
+      (p.category || "").toLowerCase().includes(activeCategory.toLowerCase())
+    );
+    return filtered.length > 0 ? filtered : defaultMapped;
+  }, [activeCategory]);
+
+  const items = useMemo(() => {
+    return filteredFull.map((p) => ({ image: p.image, text: p.text }));
+  }, [filteredFull]);
 
   const handleCategoryClick = (cat) => {
     setActiveCategory(cat);
+    setSpinRequest({ index: 0, timestamp: Date.now() });
   };
 
   const handleItemClick = useCallback((idx) => {
-    const pool = filteredFull || allFull;
-    if (!pool || !pool[idx]) return;
+    if (!filteredFull || !filteredFull[idx]) return;
     setShowcaseItem(idx);
-  }, [filteredFull, allFull]);
+  }, [filteredFull]);
 
   const categories = ["ALL", "FULL STACK", "REAL-TIME", "WEB APP"];
 
@@ -225,9 +218,9 @@ export default function ProjectsPage() {
       </section>
 
       {/* Modal / Showcase */}
-      {showcaseItem !== null && (filteredFull || allFull) && (
+      {showcaseItem !== null && filteredFull && (
         <ProjectShowcase
-          items={filteredFull || allFull}
+          items={filteredFull}
           startIdx={showcaseItem}
           onClose={() => setShowcaseItem(null)}
         />
