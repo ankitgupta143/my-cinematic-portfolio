@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const DAILY_LIMIT = 3;
+const DAILY_LIMIT = 5;
 
 function getIP(request) {
   return (
@@ -15,68 +15,101 @@ function getIP(request) {
 }
 
 export async function POST(request) {
-  const { name, email, message } = await request.json();
-
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
-  }
-
-  // ── Rate limit: max 3 per IP per day ──────────────────────────
-  const ip = getIP(request);
-  const dayStart = new Date();
-  dayStart.setHours(0, 0, 0, 0);
-
-  const { count } = await supabase
-    .from('inquiries')
-    .select('*', { count: 'exact', head: true })
-    .eq('ip', ip)
-    .gte('created_at', dayStart.toISOString());
-
-  if (count >= DAILY_LIMIT) {
-    return NextResponse.json(
-      { error: `Too many messages. You can send up to ${DAILY_LIMIT} messages per day.` },
-      { status: 429 }
-    );
-  }
-
   try {
-    // Save to Supabase (include ip for rate limiting)
-    const { error: dbError } = await supabase.from('inquiries').insert([{ name, email, message, ip }]);
-    if (dbError) {
-      console.error('Supabase insert error:', dbError);
+    const { name, email, message } = await request.json();
+
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
     }
 
+    const ip = getIP(request);
+    const dayStart = new Date();
+    dayStart.setHours(0, 0, 0, 0);
+
+    // Optional Supabase rate limiting & storage (only if Supabase is connected)
+    if (supabase) {
+      try {
+        const { count, error: countError } = await supabase
+          .from('inquiries')
+          .select('*', { count: 'exact', head: true })
+          .eq('ip', ip)
+          .gte('created_at', dayStart.toISOString());
+
+        if (!countError && count >= DAILY_LIMIT) {
+          return NextResponse.json(
+            { error: `Too many messages. You can send up to ${DAILY_LIMIT} messages per day.` },
+            { status: 429 }
+          );
+        }
+
+        // Store inquiry in database
+        await supabase.from('inquiries').insert([{ name, email, message, ip }]);
+      } catch (dbErr) {
+        console.warn('Supabase inquiry tracking skipped or failed:', dbErr.message);
+      }
+    }
+
+    // Check if Resend is configured
     if (!resend) {
-      return NextResponse.json({ success: true, message: 'Message recorded. Email notification skipped (no RESEND_API_KEY).' });
+      console.warn('RESEND_API_KEY is not configured in environment variables.');
+      return NextResponse.json({
+        success: true,
+        message: 'Message received (Warning: RESEND_API_KEY not configured).',
+      });
     }
 
-    // Send email
-    const { data, error: emailError } = await resend.emails.send({
+    const recipient = process.env.ADMIN_EMAIL;
+    if (!recipient) {
+      console.error('ADMIN_EMAIL is not set in environment variables.');
+      return NextResponse.json({ error: 'Recipient email is not configured' }, { status: 500 });
+    }
+
+    // Send email via Resend
+    const { error: emailError } = await resend.emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
-      to: process.env.ADMIN_EMAIL,
+      to: recipient,
       replyTo: email,
-      subject: `New message from ${name}`,
+      subject: `New portfolio inquiry from ${name}`,
       html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#fff;padding:32px;border-radius:12px">
-          <h2 style="color:#ff6b1a;margin:0 0 24px">New Contact Form Submission</h2>
-          <table style="width:100%;border-collapse:collapse">
-            <tr><td style="padding:8px 0;color:#999;width:80px">From</td><td style="padding:8px 0;color:#fff">${name}</td></tr>
-            <tr><td style="padding:8px 0;color:#999">Email</td><td style="padding:8px 0;color:#ff6b1a"><a href="mailto:${email}" style="color:#ff6b1a">${email}</a></td></tr>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 32px; border-radius: 16px; border: 1px solid #222;">
+          <div style="border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 24px;">
+            <h2 style="color: #ff6b1a; margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">New Message from Portfolio</h2>
+            <p style="color: #666; margin: 6px 0 0; font-size: 13px;">Received via ankitgupta143 portfolio contact form</p>
+          </div>
+          
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+            <tr>
+              <td style="padding: 10px 0; color: #888; font-size: 14px; width: 80px; font-weight: 500;">From:</td>
+              <td style="padding: 10px 0; color: #fff; font-size: 14px; font-weight: 600;">${name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; color: #888; font-size: 14px; font-weight: 500;">Email:</td>
+              <td style="padding: 10px 0; color: #ff6b1a; font-size: 14px; font-weight: 600;">
+                <a href="mailto:${email}" style="color: #ff6b1a; text-decoration: none;">${email}</a>
+              </td>
+            </tr>
           </table>
-          <hr style="border:1px solid #222;margin:20px 0"/>
-          <p style="color:#ccc;line-height:1.7;white-space:pre-wrap">${message}</p>
+
+          <div style="background: #141414; border-radius: 12px; padding: 20px; border: 1px solid #262626;">
+            <p style="color: #aaa; margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Message Content</p>
+            <p style="color: #e5e5e5; line-height: 1.7; font-size: 14px; white-space: pre-wrap; margin: 0;">${message}</p>
+          </div>
+
+          <div style="margin-top: 24px; text-align: center; border-top: 1px solid #222; padding-top: 20px;">
+            <a href="mailto:${email}" style="display: inline-block; background: #ff6b1a; color: #000; font-weight: 700; font-size: 13px; padding: 12px 28px; border-radius: 9999px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;">Reply Directly to ${name}</a>
+          </div>
         </div>
       `,
     });
 
     if (emailError) {
-      console.error('Resend error:', emailError);
+      console.error('Resend delivery error:', emailError);
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('Resend error:', err);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    console.error('Contact API error:', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
