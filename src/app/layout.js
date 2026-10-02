@@ -1,8 +1,6 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import TrackVisit from "@/components/TrackVisit";
 import { Analytics } from "@vercel/analytics/next";
-import NewsletterPopup from "@/components/NewsletterPopup";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const playfair = Playfair_Display({
@@ -258,11 +256,9 @@ export default function RootLayout({ children }) {
         )}
       </head>
       <body>
-        <TrackVisit />
         <div className="bottom-blur" aria-hidden="true" />
         {children}
         <Analytics />
-        <NewsletterPopup />
       </body>
     </html>
   );

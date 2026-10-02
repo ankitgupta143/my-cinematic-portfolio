@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import PageShell from "../../../components/PageShell";
+import { PROJECTS } from "@/app/work/content";
 
 function safeUrl(url) {
   if (!url) return url;
@@ -18,21 +19,19 @@ export default function ProjectPage() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/works/${id}`)
-      .then((r) => {
-        if (r.status === 404) { setNotFound(true); setLoading(false); return null; }
-        return r.json();
-      })
-      .then((data) => {
-        if (data && !data.error) {
-          setProject(data);
-          setLoading(false);
-        } else {
-          setNotFound(true);
-          setLoading(false);
-        }
-      })
-      .catch(() => { setNotFound(true); setLoading(false); });
+    if (!id) return;
+    const found = PROJECTS.find((p) => p.id === id || p.num === id);
+    if (found) {
+      setProject({
+        ...found,
+        services: found.features || (found.tech ? found.tech.split("·").map((s) => s.trim()) : []),
+        gallery: found.image ? [found.image] : [],
+      });
+      setLoading(false);
+    } else {
+      setNotFound(true);
+      setLoading(false);
+    }
   }, [id]);
 
   useEffect(() => {

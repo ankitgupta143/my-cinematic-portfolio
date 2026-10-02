@@ -3,23 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-export default function TrackedLink({ href, label, children, className, target, rel, isExternal = false }) {
-  const handleClick = () => {
-    try {
-      fetch("/api/analytics/click", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          label: label || "Unknown Link",
-          url: href,
-          page: window.location.pathname
-        }),
-      });
-    } catch (e) {
-      // Ignore errors so navigation isn't blocked
-    }
-  };
-
+export default function TrackedLink({ href, children, className, target, rel, isExternal = false }) {
   if (isExternal) {
     return (
       <a
@@ -27,7 +11,6 @@ export default function TrackedLink({ href, label, children, className, target, 
         className={className}
         target={target}
         rel={rel}
-        onClick={handleClick}
       >
         {children}
       </a>
@@ -40,7 +23,6 @@ export default function TrackedLink({ href, label, children, className, target, 
       className={className}
       target={target}
       rel={rel}
-      onClick={handleClick}
     >
       {children}
     </Link>

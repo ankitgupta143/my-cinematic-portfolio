@@ -1,18 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { supabase } from '@/lib/supabase';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-
-const DAILY_LIMIT = 5;
-
-function getIP(request) {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    '0.0.0.0'
-  );
-}
 
 export async function POST(request) {
   try {
@@ -22,39 +11,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
     }
 
-    const ip = getIP(request);
-    const dayStart = new Date();
-    dayStart.setHours(0, 0, 0, 0);
-
-    // Optional Supabase rate limiting & storage (only if Supabase is connected)
-    if (supabase) {
-      try {
-        const { count, error: countError } = await supabase
-          .from('inquiries')
-          .select('*', { count: 'exact', head: true })
-          .eq('ip', ip)
-          .gte('created_at', dayStart.toISOString());
-
-        if (!countError && count >= DAILY_LIMIT) {
-          return NextResponse.json(
-            { error: `Too many messages. You can send up to ${DAILY_LIMIT} messages per day.` },
-            { status: 429 }
-          );
-        }
-
-        // Store inquiry in database
-        await supabase.from('inquiries').insert([{ name, email, message, ip }]);
-      } catch (dbErr) {
-        console.warn('Supabase inquiry tracking skipped or failed:', dbErr.message);
-      }
-    }
-
-    // Check if Resend is configured
     if (!resend) {
       console.warn('RESEND_API_KEY is not configured in environment variables.');
       return NextResponse.json({
         success: true,
-        message: 'Message received (Warning: RESEND_API_KEY not configured).',
+        message: 'Message received (RESEND_API_KEY not configured yet).',
       });
     }
 
@@ -74,7 +35,7 @@ export async function POST(request) {
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; padding: 32px; border-radius: 16px; border: 1px solid #222;">
           <div style="border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 24px;">
             <h2 style="color: #ff6b1a; margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">New Message from Portfolio</h2>
-            <p style="color: #666; margin: 6px 0 0; font-size: 13px;">Received via ankitgupta143 portfolio contact form</p>
+            <p style="color: #666; margin: 6px 0 0; font-size: 13px;">Received via ankitgupta.dev contact form</p>
           </div>
           
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">

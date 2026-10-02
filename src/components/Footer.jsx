@@ -1,41 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { trackClick } from "@/lib/trackClick";
 
 const LINKS = [
   { label: "About",   href: "/about"   },
   { label: "Contact", href: "/contact" },
 ];
 
-const SOCIAL_KEYS = [
-  { key: "instagram", label: "Instagram" },
-  { key: "github",    label: "GitHub"    },
-  { key: "linkedin",  label: "LinkedIn"  },
-  { key: "twitter",   label: "X"         },
-  { key: "youtube",   label: "YouTube"   },
-  { key: "behance",   label: "Behance"   },
-  { key: "dribbble",  label: "Dribbble"  },
-  { key: "whatsapp",  label: "WhatsApp"  },
-];
-
 export default function Footer() {
   const ref = useRef(null);
-  const [socials, setSocials] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/settings?key=social_links")
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (!data?.value) return;
-        const active = SOCIAL_KEYS.filter(s => data.value[s.key]?.trim()).map(s => ({
-          label: s.label,
-          href:  data.value[s.key].trim(),
-        }));
-        setSocials(active);
-      })
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -98,7 +71,7 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-6 text-[11px] uppercase tracking-[0.3em] font-medium">
             <a
-              href="https://github.com"
+              href="https://github.com/ankitgupta143"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/40 hover:text-white transition-colors duration-300 flex items-center gap-2"
@@ -133,4 +106,3 @@ export default function Footer() {
     </footer>
   );
 }
-

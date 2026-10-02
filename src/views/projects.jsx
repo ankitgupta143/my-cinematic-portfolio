@@ -147,29 +147,7 @@ export default function ProjectsPage() {
 
   const [activeCategory, setActiveCategory] = useState("ALL");
 
-  useEffect(() => {
-    fetch("/api/works")
-      .then((r) => r.ok ? r.json() : [])
-      .then((data) => {
-        if (data && data.length > 0) {
-          const mapped = data.map((p) => ({
-            id: p.id,
-            image: p.image_url || "/photo/project.webp",
-            text: p.title,
-            category: p.category || "Full Stack",
-            description: p.description,
-            tech: p.tech,
-            link: p.link,
-          }));
-          setAllFull(mapped);
-        } else {
-          setAllFull(defaultMapped);
-        }
-      })
-      .catch(() => {
-        setAllFull(defaultMapped);
-      });
-  }, []);
+
 
   const [spinRequest, setSpinRequest] = useState({ index: 0, timestamp: 0 });
   const [filteredFull, setFilteredFull] = useState(null);
