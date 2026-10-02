@@ -1,0 +1,42 @@
+# Ankit Gupta — Full Stack Developer & Software Engineer
+
+> Ankit Gupta is a Full Stack Developer and Software Engineer from India.
+> He builds modern, high-performance web applications and cinematic digital experiences at the intersection of frontend elegance, scalable backend architectures, and clean code.
+
+## Who is Ankit Gupta?
+
+Ankit Gupta is a Software Engineer at Prometteur Solutions Pvt Ltd with a B.Tech in Computer Science & Engineering from Parul University (CGPA: 8.30). He specializes in building full-stack web applications using React, Next.js, Node.js, Express, MongoDB, and SQL. With 500+ LeetCode problems and 650+ GeeksforGeeks problems solved, he possesses strong algorithmic problem-solving capabilities alongside engineering craft.
+
+## Core Capabilities & Services
+
+### 1. Full-Stack Web Development
+Building scalable, responsive, and secure web applications using React, Next.js, Node.js, Express.js, MongoDB, and SQL.
+
+### 2. Frontend Engineering
+Crafting intuitive, performant user interfaces with React, Next.js, Tailwind CSS, Framer Motion, GSAP, and Three.js for interactive 3D and cinematic web experiences.
+
+### 3. Backend & API Architecture
+Designing RESTful APIs, microservices, authentication systems (JWT, OAuth), and database schemas with strong data validation and security best practices.
+
+### 4. Problem Solving & Algorithms
+Strong foundation in Data Structures and Algorithms with 500+ LeetCode problems and 650+ GeeksforGeeks problems solved.
+
+## Technical Skills
+
+### Frontend
+React, Next.js, JavaScript, TypeScript, Tailwind CSS, HTML5, CSS3, Bootstrap, Material UI, Vite, GSAP, Three.js, WebGL
+
+### Backend & Databases
+Node.js, Express.js, MongoDB, SQL, Firebase, REST APIs, JWT, Supabase
+
+### Tools & DevOps
+Git, GitHub, Docker, Postman, Cloudinary, Vercel
+
+## Experience
+- Software Engineer-1 — Prometteur Solutions Pvt Ltd (March 2026 – Present)
+- React Intern — SlashMark (2025)
+- Summer Intern — ByteXL (Jan 2025 – Apr 2025)
+
+## Connect with Ankit Gupta
+- GitHub: https://github.com/ankitgupta143
+- Repository: https://github.com/ankitgupta143/my-cinematic-portfolio

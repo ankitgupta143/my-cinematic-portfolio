@@ -1,0 +1,48 @@
+# Ankit Gupta — Full Stack Developer & Software Engineer (Full Details)
+
+> Full machine-readable profile of Ankit Gupta — Full Stack Developer and Software Engineer from India.
+
+## Identity
+
+- Name: Ankit Gupta
+- Title: Software Engineer & Full Stack Developer
+- Location: Surat, India
+- Education: B.Tech in Computer Science & Engineering (Parul University, 2025, CGPA: 8.30)
+- Current Role: Software Engineer-1 at Prometteur Solutions Pvt Ltd
+- GitHub: https://github.com/ankitgupta143
+- Repository: https://github.com/ankitgupta143/my-cinematic-portfolio
+
+## Professional Summary
+
+Ankit Gupta is a Computer Science graduate and Full Stack Developer who enjoys turning ideas into practical, scalable digital products. His work spans modern frontend interfaces, backend architecture, REST APIs, authentication systems, databases, and AI-powered applications. He cares deeply about writing clean code, understanding how systems work under the hood, and solving complex algorithmic challenges.
+
+## Core Capabilities
+
+### 1. Full-Stack Web Development
+- Scalable web applications using React, Next.js, Node.js, Express, MongoDB, and SQL.
+- Interactive, responsive UI engineering with Tailwind CSS, Framer Motion, and GSAP.
+- 3D interactive elements and cinematic video scrubbing effects.
+
+### 2. Backend & System Design
+- RESTful API design with clean modular architecture.
+- Authentication & authorization with JWT, access/refresh tokens, and role-based access.
+- Relational and document databases: MongoDB, PostgreSQL, SQL, Supabase.
+
+### 3. Algorithmic Problem Solving
+- 500+ LeetCode problems solved.
+- 650+ GeeksforGeeks problems solved.
+- Strong knowledge of Data Structures, Algorithms, and optimization.
+
+## Technical Skills
+
+- **Languages**: JavaScript, TypeScript, SQL, HTML5, CSS3, C/C++
+- **Frontend**: React, Next.js, Tailwind CSS, Bootstrap, Material UI, Vite, GSAP, Three.js
+- **Backend**: Node.js, Express.js, REST APIs, JWT, Supabase
+- **Databases**: MongoDB, PostgreSQL, SQL, Firebase
+- **Tools & Platforms**: Git, GitHub, Docker, Postman, Cloudinary, Vercel
+
+## Experience
+
+- **Software Engineer-1** — Prometteur Solutions Pvt Ltd (March 2026 – Present, Surat, India)
+- **React Intern** — SlashMark (2025, Remote)
+- **Summer Intern** — ByteXL (Jan 2025 – Apr 2025, Remote)
