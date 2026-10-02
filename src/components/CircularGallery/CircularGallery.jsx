@@ -29,21 +29,29 @@ function autoBind(instance) {
 function createTextTexture(gl, text, font = 'bold 30px monospace', color = 'black') {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
+  
+  const dpr = 2;
   context.font = font;
   const metrics = context.measureText(text);
   const textWidth = Math.ceil(metrics.width);
   const sizeMatch = font.match(/(\d+)px/);
   const fontSize = sizeMatch ? parseInt(sizeMatch[1], 10) : 30;
-  const textHeight = Math.ceil(fontSize * 1.2);
-  canvas.width = textWidth + 40; // extra padding
-  canvas.height = textHeight + 20;
+  const textHeight = Math.ceil(fontSize * 1.25);
+  
+  const logicalWidth = textWidth + 32;
+  const logicalHeight = textHeight + 16;
+  
+  canvas.width = Math.ceil(logicalWidth * dpr);
+  canvas.height = Math.ceil(logicalHeight * dpr);
+  
+  context.scale(dpr, dpr);
   context.font = font;
   
   if (color === 'gradient') {
-    const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+    const gradient = context.createLinearGradient(0, 0, logicalWidth, 0);
     gradient.addColorStop(0, '#ffffff');
-    gradient.addColorStop(0.5, '#d4d4d4');
-    gradient.addColorStop(1, '#a3a3a3');
+    gradient.addColorStop(0.5, '#e2e8f0');
+    gradient.addColorStop(1, '#94a3b8');
     context.fillStyle = gradient;
   } else {
     context.fillStyle = color;
@@ -51,11 +59,11 @@ function createTextTexture(gl, text, font = 'bold 30px monospace', color = 'blac
   
   context.textBaseline = 'middle';
   context.textAlign = 'center';
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
+  context.clearRect(0, 0, logicalWidth, logicalHeight);
+  context.fillText(text, logicalWidth / 2, logicalHeight / 2);
   const texture = new Texture(gl, { generateMipmaps: false });
   texture.image = canvas;
-  return { texture, width: canvas.width, height: canvas.height };
+  return { texture, width: logicalWidth, height: logicalHeight };
 }
 
 class Title {
@@ -71,8 +79,11 @@ class Title {
   }
   createMesh() {
     const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+    this.aspect = width / height;
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
+      depthTest: false,
+      depthWrite: false,
       vertex: `
         attribute vec3 position;
         attribute vec2 uv;
@@ -90,7 +101,7 @@ class Title {
         varying vec2 vUv;
         void main() {
           vec4 color = texture2D(tMap, vUv);
-          if (color.a < 0.1) discard;
+          if (color.a < 0.05) discard;
           gl_FragColor = color;
         }
       `,
@@ -98,13 +109,33 @@ class Title {
       transparent: true
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
-    const aspect = width / height;
-    const textHeight = this.plane.scale.y * 0.15;
-    const textWidth = textHeight * aspect;
-    this.mesh.scale.set(textWidth, textHeight, 1);
-    // Place text below the card
-    this.mesh.position.y = -this.plane.scale.y * 0.5 - 0.12;
     this.mesh.setParent(this.plane);
+    this.onResize();
+  }
+  onResize() {
+    if (!this.mesh || !this.aspect) return;
+    const planeScaleX = this.plane.scale.x || 1;
+    const planeScaleY = this.plane.scale.y || 1;
+    
+    // In local space of the card (where card width = 1.0, card height = 1.0):
+    // Standard target text height relative to card height:
+    let localTextHeight = 0.07;
+    // Compute local width to preserve texture aspect ratio on screen:
+    // (localTextWidth * planeScaleX) / (localTextHeight * planeScaleY) = this.aspect
+    let localTextWidth = localTextHeight * this.aspect * (planeScaleY / planeScaleX);
+    
+    // Constrain maximum width to 80% of card width so text never crowds adjacent cards
+    const maxLocalWidth = 0.80;
+    if (localTextWidth > maxLocalWidth) {
+      const shrinkRatio = maxLocalWidth / localTextWidth;
+      localTextWidth = maxLocalWidth;
+      localTextHeight *= shrinkRatio;
+    }
+    
+    this.mesh.scale.set(localTextWidth, localTextHeight, 1);
+    // Position cleanly below the card (card bottom is at y = -0.5)
+    this.mesh.position.x = 0;
+    this.mesh.position.y = -0.5 - (localTextHeight * 0.5) - 0.06;
   }
 }
 
@@ -286,6 +317,9 @@ class Media {
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
+    if (this.title) {
+      this.title.onResize();
+    }
   }
 }
 

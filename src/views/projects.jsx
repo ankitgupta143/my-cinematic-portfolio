@@ -180,7 +180,7 @@ export default function ProjectsPage() {
               bend={3}
               textColor="gradient"
               borderRadius={0.05}
-              font="500 40px 'Inter', sans-serif"
+              font="600 32px 'Inter', sans-serif"
               scrollSpeed={2}
               scrollEase={0.05}
               onItemClick={handleItemClick}
