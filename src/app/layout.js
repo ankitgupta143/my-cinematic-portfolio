@@ -79,10 +79,10 @@ export const metadata = {
 
   icons: {
     icon: [
-      { url: "/photo/favicon.png", type: "image/png" },
+      { url: "/photo/favicon.png?v=2", type: "image/png" },
     ],
-    apple: "/photo/favicon.png",
-    shortcut: "/photo/favicon.png",
+    apple: "/photo/favicon.png?v=2",
+    shortcut: "/photo/favicon.png?v=2",
   },
 
   manifest: "/manifest.json",
