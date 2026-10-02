@@ -105,7 +105,7 @@ export const PROJECTS = [
     image: "/projects/hospital.jpg",
     features: ["Patient Records", "Doctor Appointments", "Centralized Admin"],
     github: "#",
-    link: "#",
+    link: "https://hospital-management-system-site.netlify.app",
   },
   {
     id: "chat-application",
@@ -137,7 +137,7 @@ export const PROJECTS = [
     image: "/projects/fitness.jpg",
     features: ["Workout Logs", "Progress Tracking", "Metric Visuals"],
     github: "#",
-    link: "#",
+    link: "https://gym-fitness-tracker.netlify.app",
   },
 ];
 
