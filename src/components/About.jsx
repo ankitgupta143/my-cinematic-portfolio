@@ -118,6 +118,7 @@ export default function About({ standalone = false }) {
               href={RESUME_URL}
               target="_blank"
               rel="noopener noreferrer"
+              download="Ankit_Gupta_Resume.pdf"
               className="inline-flex items-center gap-2 px-6 py-3 border border-[#ff6b1a]/30 text-[#ff6b1a] text-xs font-bold uppercase tracking-widest rounded-full hover:bg-[#ff6b1a] hover:text-black transition-colors duration-300"
             >
               View Resume

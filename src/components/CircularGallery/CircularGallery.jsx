@@ -119,13 +119,13 @@ class Title {
     
     // In local space of the card (where card width = 1.0, card height = 1.0):
     // Standard target text height relative to card height:
-    let localTextHeight = 0.07;
+    let localTextHeight = 0.095;
     // Compute local width to preserve texture aspect ratio on screen:
     // (localTextWidth * planeScaleX) / (localTextHeight * planeScaleY) = this.aspect
     let localTextWidth = localTextHeight * this.aspect * (planeScaleY / planeScaleX);
     
-    // Constrain maximum width to 80% of card width so text never crowds adjacent cards
-    const maxLocalWidth = 0.80;
+    // Constrain maximum width to 82% of card width so text never crowds adjacent cards
+    const maxLocalWidth = 0.82;
     if (localTextWidth > maxLocalWidth) {
       const shrinkRatio = maxLocalWidth / localTextWidth;
       localTextWidth = maxLocalWidth;
@@ -135,7 +135,7 @@ class Title {
     this.mesh.scale.set(localTextWidth, localTextHeight, 1);
     // Position cleanly below the card (card bottom is at y = -0.5)
     this.mesh.position.x = 0;
-    this.mesh.position.y = -0.5 - (localTextHeight * 0.5) - 0.06;
+    this.mesh.position.y = -0.5 - (localTextHeight * 0.5) - 0.08;
   }
 }
 
@@ -292,13 +292,15 @@ class Media {
     const viewportOffset = this.viewport.width / 2;
     this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
     this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
-    if (direction === 'right' && this.isBefore) {
-      this.extra -= this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
-    if (direction === 'left' && this.isAfter) {
-      this.extra += this.widthTotal;
-      this.isBefore = this.isAfter = false;
+    if (this.length > 1) {
+      if (direction === 'right' && this.isBefore) {
+        this.extra -= this.widthTotal;
+        this.isBefore = this.isAfter = false;
+      }
+      if (direction === 'left' && this.isAfter) {
+        this.extra += this.widthTotal;
+        this.isBefore = this.isAfter = false;
+      }
     }
   }
   onResize({ screen, viewport } = {}) {
@@ -310,8 +312,8 @@ class Media {
       }
     }
     this.scale = (this.screen.height / 1500) * this.scaleMultiplier;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * (540 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (860 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
@@ -365,7 +367,8 @@ class App {
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
     const galleryItems = items || [];
-    this.mediasImages = galleryItems.concat(galleryItems);
+    this.isDuplicated = galleryItems.length >= 4;
+    this.mediasImages = this.isDuplicated ? galleryItems.concat(galleryItems) : galleryItems;
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         geometry: this.planeGeometry, gl: this.gl, image: data.image,
@@ -384,6 +387,7 @@ class App {
   }
   onTouchMove(e) {
     if (!this.isDown) return;
+    if (this.medias && this.medias.length <= 1) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.dragDistance = Math.abs(x - this.start);
@@ -421,12 +425,13 @@ class App {
       }
     }
     if (closest) {
-      const originalLen = this.medias.length / 2;
+      const originalLen = this.isDuplicated ? this.medias.length / 2 : this.medias.length;
       const idx = closest.index % originalLen;
       this.onItemClick(idx);
     }
   }
   onWheel(e) {
+    if (this.medias && this.medias.length <= 1) return;
     e.preventDefault();
     e.stopPropagation();
     const delta = e.deltaY || e.wheelDelta || e.detail;

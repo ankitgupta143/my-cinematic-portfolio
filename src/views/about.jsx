@@ -100,7 +100,7 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-wrap gap-4 items-center">
-              <a href={RESUME_URL} target="_blank" rel="noopener noreferrer"
+              <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" download="Ankit_Gupta_Resume.pdf"
                 className="ap-bio inline-flex items-center gap-2 px-6 py-3.5 bg-[#ff6b1a] text-black text-xs font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors duration-300 shadow-[0_0_20px_rgba(255,107,26,0.3)]"
               >
                 View Resume

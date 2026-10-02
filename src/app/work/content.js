@@ -19,7 +19,7 @@ export const PROJECTS = [
     description:
       "An AI-powered meeting intelligence platform that transforms conversations into structured, searchable insights. MeetMind helps users understand meetings through AI-generated summaries, transcripts, action items, decisions, analytics, and an interactive AI assistant.",
     tech: "Next.js · React · Node.js · MongoDB · AI · Deepgram · REST APIs · JWT",
-    image: "/projects/meetmind.jpg",
+    image: "/projects/meetmind.png",
     features: [
       "AI Meeting Summaries",
       "Meeting Transcription",
@@ -102,7 +102,7 @@ export const PROJECTS = [
     description:
       "A web-based hospital management application designed to simplify the management of patients, doctors, and healthcare operations through a centralized system.",
     tech: "React · Node.js · Express.js · MongoDB · REST APIs",
-    image: "/projects/hospital.jpg",
+    image: "/projects/hospital.png",
     features: ["Patient Records", "Doctor Appointments", "Centralized Admin"],
     github: "#",
     link: "https://hospital-management-system-site.netlify.app",
@@ -134,7 +134,7 @@ export const PROJECTS = [
     description:
       "A fitness tracking application designed to help users monitor workouts, log daily metrics, and maintain their fitness routines.",
     tech: "React · Node.js · Express.js · MongoDB",
-    image: "/projects/fitness.jpg",
+    image: "/projects/fitness.png",
     features: ["Workout Logs", "Progress Tracking", "Metric Visuals"],
     github: "#",
     link: "https://gym-fitness-tracker.netlify.app",
