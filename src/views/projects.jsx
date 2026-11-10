@@ -108,7 +108,18 @@ function ProjectShowcase({ items, startIdx, onClose }) {
       <div className="fixed inset-0 z-[115] flex flex-col items-center justify-center p-6 md:p-12 text-center max-w-3xl mx-auto">
         <span className="text-xs font-mono text-[#ff6b1a] tracking-widest uppercase mb-3">{current.category}</span>
         <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4">{current.text}</h2>
-        <p className="text-sm md:text-base text-white/60 leading-relaxed font-light mb-6 max-w-xl">{current.description}</p>
+        {current.bullets && current.bullets.length > 0 ? (
+          <ul className="text-left text-xs md:text-sm text-white/70 leading-relaxed font-light mb-6 max-w-xl space-y-1.5">
+            {current.bullets.map((b, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <span className="text-[#ff6b1a] mt-0.5 shrink-0 text-[10px]">▹</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm md:text-base text-white/60 leading-relaxed font-light mb-6 max-w-xl">{current.description}</p>
+        )}
         {current.tech && (
           <p className="text-xs font-mono text-[#ff6b1a]/90 mb-8 bg-white/5 px-4 py-2 rounded-full border border-white/10">
             {current.tech}
@@ -133,6 +144,7 @@ const defaultMapped = PROJECTS.map((p) => ({
   text: p.title,
   category: p.shortCategory || "Full Stack",
   description: p.description,
+  bullets: p.bullets,
   tech: p.tech,
   link: p.link,
 }));

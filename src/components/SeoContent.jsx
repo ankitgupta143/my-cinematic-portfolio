@@ -74,9 +74,7 @@ export default function SeoContent() {
         <h2>Selected Projects by Ankit Gupta</h2>
         <ul>
           <li>MeetMind — AI Meeting Intelligence Platform (Next.js, Node.js, MongoDB, AI, Deepgram, JWT)</li>
-          <li>QR Menu Express — Digital Restaurant Menu Platform (React, Node.js, Express, MongoDB, Firebase)</li>
-          <li>Nexus — Disaster Relief Platform (React, Node.js, MongoDB, REST APIs)</li>
-          <li>MERN Restaurant App — Full-Stack Digital Restaurant System</li>
+          <li>Production iGaming Platform — Scalable iGaming Web Application (React.js, Next.js, KYC, Payment Gateways)</li>
           <li>Hospital Management System — Web-based Healthcare Management Application</li>
           <li>Chat Application — Real-Time Instant Messaging System</li>
           <li>Fitness Tracker — Workout and Fitness Activity Monitoring App</li>

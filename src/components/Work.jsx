@@ -106,9 +106,20 @@ export default function Work() {
                   </h3>
                   <p className="text-xs md:text-sm font-mono text-white/50 mb-4">{proj.tagline}</p>
 
-                  <p className="font-sans text-xs md:text-sm text-white/70 font-light leading-relaxed max-w-2xl mb-5">
-                    {proj.description}
-                  </p>
+                  {proj.bullets && proj.bullets.length > 0 ? (
+                    <ul className="space-y-1.5 mb-5 font-sans text-xs md:text-sm text-white/70 font-light leading-relaxed max-w-2xl">
+                      {proj.bullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-[#ff6b1a] mt-0.5 shrink-0 text-[10px]">▹</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="font-sans text-xs md:text-sm text-white/70 font-light leading-relaxed max-w-2xl mb-5">
+                      {proj.description}
+                    </p>
+                  )}
 
                   {/* Feature Pills */}
                   {proj.features && proj.features.length > 0 && (

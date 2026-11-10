@@ -46,9 +46,7 @@ export async function GET() {
 
     projects: [
       { name: "MeetMind", category: "AI • Full Stack • Next.js", description: "AI-powered meeting intelligence platform" },
-      { name: "QR Menu Express", category: "Full Stack • MERN", description: "Digital restaurant menu platform with QR codes" },
-      { name: "Nexus", category: "Full Stack • Social Impact", description: "Disaster relief and emergency coordination platform" },
-      { name: "MERN Restaurant App", category: "Full Stack • MERN", description: "Seamless digital restaurant system" },
+      { name: "Production iGaming Platform", category: "Full Stack • iGaming • Next.js", description: "Scalable iGaming web application with payment integration, KYC verification, and wallet management" },
       { name: "Hospital Management System", category: "Full Stack • Management System", description: "Centralized healthcare management platform" },
       { name: "Chat Application", category: "Real-Time • Full Stack", description: "Instant messaging and user communication application" },
       { name: "Fitness Tracker", category: "Web Application", description: "Workout and fitness activity monitoring app" },
